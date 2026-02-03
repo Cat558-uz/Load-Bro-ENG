@@ -390,25 +390,6 @@ end)
 local ConfigTab = createTab("Config")
 
 
-
-ConfigTab.AddSection("enter or < for save config")
-
-ConfigTab.AddSection("system config")
-
-ConfigTab.AddTextBox("name config", function(txt)
-	currentConfig = txt
-	notify("System", "Config selected: " .. txt, 4)
-end)
-
-ConfigTab.AddButton("Create / Save Config", function()
-	MakeConfig(currentConfig)
-end)
-
-ConfigTab.AddButton("Load Config", function()
-	LoadConfig(currentConfig)
-end)
-
-
 ConfigTab.AddSection("system")
 
 ConfigTab.AddButton("View FPS", function()
@@ -2587,3 +2568,5 @@ sugestaoTab.AddButton("load sugestion ", function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Cat558-uz/Ed-Sugestion/refs/heads/main/sugestao.lua.obfuscated.lua.txt"))()
 
 end)
+
+sugestaoTab.AddSection("👀 ")
