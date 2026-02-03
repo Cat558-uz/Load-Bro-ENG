@@ -118,11 +118,9 @@ end
 loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Simple-AntiCheat-Bypass-84341"))()
 
 
-notify("System", "ant cheat loaded", 1)
+notify("warn", "The scripts will not work.", 1)
 wait(1)
-notify("System", "loading file Npcc", 1)
-wait(1)
-notify("System", "waitttt", 1)
+notify("warn", "The script uses Ant cheat!", 1)
 
 --== HAVENS SCRIPT HUB COM SISTEMA DE CONFIGURAÇÃO COMPLETO ==--
 
@@ -206,7 +204,7 @@ local function MakeConfig(name)
 	if not isfolder(folder) then makefolder(folder) end
 	local path = folder .. "/" .. name .. ".json"
 	writefile(path, HttpService:JSONEncode(configs))
-	notify("sucess", ": " .. name, 1)
+	print("g")
 end
 
 local function LoadConfig(name)
@@ -796,14 +794,12 @@ end)
 ConfigTab.AddButton("destroy GUI", function() ScreenGui:Destroy() end)
 
 
--- // Exemplo de uso:
-local ServerTab = createTab("Server")
 
-ServerTab.Content.Visible = true
+ConfigTab.Content.Visible = true
 
-ServerTab.AddSection("functions")
+ConfigTab.AddSection("Server")
 
-ServerTab.AddButton("Destroy stats", function()
+ConfigTab.AddButton("Destroy stats", function()
 -- script create BY ghost
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
@@ -848,7 +844,7 @@ playerGui.ChildAdded:Connect(function(c)
 end)
 end)
 
-ServerTab.AddButton("Reset", function()
+ConfigTab.AddButton("Reset", function()
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") then
@@ -856,9 +852,43 @@ LocalPlayer.Character.Humanoid.Health = 0
 end
 end)
 
-ServerTab.AddButton("Rejoin", function()
+ConfigTab.AddButton("Rejoin", function()
 local TeleportService = game:GetService("TeleportService")
 TeleportService:Teleport(game.PlaceId)
+end)
+
+ConfigTab.AddButton("server hop ", function()
+
+
+local TeleportService = game:GetService("TeleportService")
+local HttpService = game:GetService("HttpService")
+local PlaceId = game.PlaceId
+local JobId = game.JobId
+
+local function serverHop()
+    -- URL da API do Roblox para listar servidores do jogo
+    local url = "https://games.roblox.com/v1/games/" .. PlaceId .. "/servers/Public?sortOrder=Asc&limit=100"
+    
+    local success, result = pcall(function()
+        return HttpService:JSONDecode(game:HttpGet(url))
+    end)
+
+    if success and result.data then
+        for _, server in ipairs(result.data) do
+            -- Verifica se o servidor tem espaço e não é o servidor atual
+            if server.playing < server.maxPlayers and server.id ~= JobId then
+                TeleportService:TeleportToPlaceInstance(PlaceId, server.id)
+                return
+            end
+        end
+    end
+    print("Nenhum servidor alternativo encontrado.")
+end
+
+
+serverHop()
+
+
 end)
 
 
@@ -1504,6 +1534,33 @@ end)
 
 
 local BartTab = createTab("Bart")
+
+BartTab.AddToggle("Bang", false, function(state)
+	local Players = game:GetService("Players")
+	local speaker = Players.LocalPlayer
+
+	if not speaker.Character then return end
+	local humanoid = speaker.Character:FindFirstChildOfClass("Humanoid")
+	if not humanoid then return end
+
+	if state then
+		-- Ativar animação R6
+		if bang then bang:Stop() end
+		if bangAnim then bangAnim:Destroy() end
+
+		bangAnim = Instance.new("Animation")
+		bangAnim.AnimationId = "rbxassetid://148840371" -- animação R6 padrão
+
+		bang = humanoid:LoadAnimation(bangAnim)
+		bang.Looped = true
+		bang:Play(0.1, 1, 1)
+		bang:AdjustSpeed(3)
+	else
+		-- Desativar animação
+		if bang then bang:Stop() bang = nil end
+		if bangAnim then bangAnim:Destroy() bangAnim = nil end
+	end
+end)
 
 BartTab.AddToggle("Noclip ( beta )", false, function(state)
     task.spawn(function()
@@ -2530,6 +2587,8 @@ end)
 
 
 local ScriptTab = createTab("Script")
+
+ScriptTab.AddSection("Some of the scripts may not work. ")
 
 ScriptTab.AddButton("wall Hop Hub ", function()
 
