@@ -427,7 +427,42 @@ end)
 local ConfigTab = createTab("Config")
 
 
-ConfigTab.AddSection("system")
+
+
+
+
+ConfigTab.AddSection("game States")
+
+
+ConfigTab.AddButton("FPS | BOOSTER", function()
+
+local paths = {
+    "lobbyCage.decoration",
+    "lobbyCage.winners",
+    "lobbyCage.time",
+    "lobbyCage.stairs",
+    "lobbyCage.store",
+    "lobbyCage.skins",
+    "Water",
+    "lobbyCage.items.owner",
+    "lobbyCage.items.SIGN",
+    "lobbyCage.items",
+    "lobbyCage.changelog",
+    "lobbyCage.donated"
+}
+
+for _, path in ipairs(paths) do
+    local obj = workspace
+    for part in string.gmatch(path, "[^.]+") do
+        obj = obj:FindFirstChild(part)
+        if not obj then break end
+    end
+    if obj then
+        obj:Destroy()
+    end
+end
+
+end)
 
 ConfigTab.AddButton("View FPS", function()
 local RunService = game:GetService("RunService")
@@ -435,8 +470,6 @@ local fps = math.floor(1 / RunService.RenderStepped:Wait())
 notify("System", "FPS: " .. fps, 3)
 end)
 
-
-ConfigTab.AddSection("game States")
 
 ConfigTab.AddToggle("View FPS Game and MS", false, function(state)
 local RunService = game:GetService("RunService")
