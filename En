@@ -427,41 +427,27 @@ local ConfigTab = createTab("Config")
 
 
 
+ConfigTab.AddButton("get lora skin (free)", function()
+
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local hrp = character:WaitForChild("HumanoidRootPart")
+
+local target = workspace.lobby.Secrets.LORA
+local clickDetector = target:WaitForChild("ClickDetector")
 
 
+hrp.CFrame = target.CFrame + Vector3.new(0, 1, 0)
 
-ConfigTab.AddSection("game States")
 
+fireclickdetector(clickDetector)
 
-ConfigTab.AddButton("FPS | BOOSTER", function()
-
-local paths = {
-    "lobbyCage.decoration",
-    "lobbyCage.winners",
-    "lobbyCage.time",
-    "lobbyCage.stairs",
-    "lobbyCage.store",
-    "lobbyCage.skins",
-    "Water",
-    "lobbyCage.items.owner",
-    "lobbyCage.items.SIGN",
-    "lobbyCage.items",
-    "lobbyCage.changelog",
-    "lobbyCage.donated"
-}
-
-for _, path in ipairs(paths) do
-    local obj = workspace
-    for part in string.gmatch(path, "[^.]+") do
-        obj = obj:FindFirstChild(part)
-        if not obj then break end
-    end
-    if obj then
-        obj:Destroy()
-    end
-end
 
 end)
+
+
+ConfigTab.AddSection("configs")
+
 
 ConfigTab.AddButton("View FPS", function()
 local RunService = game:GetService("RunService")
@@ -966,19 +952,6 @@ end)
 
 local HomerTab = createTab("Homer")
 
-HomerTab.AddButton("Change Team focus", function()
-	if espMode == "ALL" then
-		espMode = "Bart"
-		notify("esp config", "Bart team only", 1)
-	elseif espMode == "Bart" then
-		espMode = "Homer"
-		notify("esp config", "Homer team only", 1)
-	else
-		espMode = "ALL"
-		notify("esp config", "All players", 1)
-	end
-end)
-
 HomerTab.AddSection("config esp")
 
 --== VARIÁVEIS ==--
@@ -994,7 +967,7 @@ local showDistance = false
 local showTeam = false
 
 --== BOTÕES E TOGGLES ==--
-HomerTab.AddToggle(" ESP", false, function(val)
+HomerTab.AddToggle("Ver todos / ESP", false, function(val)
 	espActive = val
 end)
 
@@ -1095,15 +1068,12 @@ end
 local function updateESP()
 	for _, p in ipairs(Players:GetPlayers()) do
 		if p ~= LocalPlayer then
-			if espMode == "Bart" and (not p.Team or p.Team.Name ~= "Bart") then
-				removeESP(p)
-				continue
-			elseif espMode == "Homer" and (not p.Team or p.Team.Name ~= "Homer") then
-				removeESP(p)
-				continue
-			end
+			-- Atualiza comportamento conforme o modo atual
+			local allowed = (espMode == "ALL")
+				or (espMode == "Barts" and p.Team and p.Team.Name == "Bart")
+				or (espMode == "Homer" and p.Team and p.Team.Name == "Homer")
 
-			if espActive and p.Character and p.Character:FindFirstChild("HumanoidRootPart") then
+			if espActive and allowed and p.Character and p.Character:FindFirstChild("HumanoidRootPart") then
 				local hrp = p.Character.HumanoidRootPart
 				local highlight = p.Character:FindFirstChild("AuraLine")
 
@@ -1168,12 +1138,7 @@ local function setupPlayer(p)
 	end)
 
 	p:GetPropertyChangedSignal("Team"):Connect(function()
-		if p.Character then
-			removeESP(p)
-			if espActive then
-				createESP(p)
-			end
-		end
+		removeESP(p)
 	end)
 end
 
@@ -1183,8 +1148,13 @@ for _, p in ipairs(Players:GetPlayers()) do
 	end
 end
 
-Players.PlayerAdded:Connect(setupPlayer)
+Players.PlayerAdded:Connect(function(p)
+	setupPlayer(p)
+end)
+
 Players.PlayerRemoving:Connect(removeESP)
+
+
 RunService.RenderStepped:Connect(updateESP)
 
 HomerTab.AddSection(" others")
@@ -2121,42 +2091,72 @@ local FarmTab = createTab("Farm")
 
 FarmTab.AddSection("Farming V2")
 
-FarmTab.AddToggle("Automatic TP Kill | Homer", false, function(val)
+FarmTab.AddToggle("Automatic TP matar | Homer", false, function(val)
 autoKill = val
 if val then autoKillLoop() end
 end)
 
-FarmTab.AddButton("Finish the Obby Hard", function()
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-32, 232, 110)
-end
+
+FarmTab.AddButton("Finish the Obby ", function()
+	local Players = game:GetService("Players")
+	local Player = Players.LocalPlayer
+	local Character = Player.Character or Player.CharacterAdded:Wait()
+	local HRP = Character:WaitForChild("HumanoidRootPart")
+
+	local function findWinpad()
+		for _, obj in pairs(workspace:GetDescendants()) do
+			if obj.Name == "Winpad" and obj:IsA("BasePart") then
+				return obj
+			end
+		end
+	end
+
+	local Winpad = findWinpad()
+	if Winpad then
+		HRP.CFrame = Winpad.CFrame + Vector3.new(0, 3, 0)
+		firetouchinterest(HRP, Winpad, 0)
+		task.wait(0.2)
+		firetouchinterest(HRP, Winpad, 1)
+	end
 end)
 
+--== Sistema de Auto Farm ==--
 local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
+local Player = Players.LocalPlayer
 local autoTp = false
 
-local function autoTpLoop()
-task.spawn(function()
-while autoTp do
-if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-32, 232, 110)
-notify("System", "attempt", 0.6)
-task.wait(0.3)
-notify("System", "back...", 0.6)
-end
-task.wait(5.3)
-end
-end)
+local function findWinpad()
+	for _, obj in pairs(workspace:GetDescendants()) do
+		if obj.Name == "Winpad" and obj:IsA("BasePart") then
+			return obj
+		end
+	end
 end
 
-FarmTab.AddToggle("Auto Farm | Obby Hard", false, function(val)
-autoTp = val
-if val then
-autoTpLoop()
+local function autoTpLoop()
+	task.spawn(function()
+		while autoTp do
+			local Character = Player.Character or Player.CharacterAdded:Wait()
+			local HRP = Character:WaitForChild("HumanoidRootPart")
+			local Winpad = findWinpad()
+
+			if Winpad then
+				HRP.CFrame = Winpad.CFrame + Vector3.new(0, 3, 0)
+				firetouchinterest(HRP, Winpad, 0)
+				task.wait(0.2)
+				firetouchinterest(HRP, Winpad, 1)
+			end
+
+			task.wait(5)
+		end
+	end)
 end
+
+FarmTab.AddToggle("Auto Farm | Obby ", false, function(val)
+	autoTp = val
+	if val then
+		autoTpLoop()
+	end
 end)
 
 local TpTab = createTab("tps")
@@ -2314,6 +2314,13 @@ ScriptTab.AddButton("bartender good", function()
 loadstring(game:HttpGet("https://rawscripts.net/raw/You-VS-Homer-Bartender-78034"))()
 
 end)
+
+ScriptTab.AddButton("Destroy THE SERVER", function()
+
+loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Super-ring-parts-Modified-105975"))()
+
+end)
+
 
 local sugestaoTab = createTab("sugestions")
 
