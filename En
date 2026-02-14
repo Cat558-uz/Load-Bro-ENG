@@ -2332,4 +2332,11 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/Cat558-uz/Ed-Sugestio
 
 end)
 
-sugestaoTab.AddSection("👀 ")
+sugestaoTab.AddSection("Warn ")
+
+sugestaoTab.AddSection("I don't put forward ideas that don't work. ")
+
+sugestaoTab.AddSection("as Admin or fly ")
+
+sugestaoTab.AddSection("new anti-cheat doesn't let ")
+
