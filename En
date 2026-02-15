@@ -121,8 +121,6 @@ notify("warn", "script by kit_cynALT", 1)
 wait(1)
 notify("warn", "Happy Valentine's Day!", 1)
 
--- // Ghost UI Library - Complete LayoutOrder Version \\ --
-
 local TweenService = game:GetService("TweenService")
 local CoreGui = game:GetService("CoreGui")
 
@@ -142,7 +140,7 @@ local function addClickAnim(instance)
 	return clickEffect
 end
 
---== BOTÃO DE ABRIR HUB ==--
+
 local OpenButton = Instance.new("TextButton", Gui)
 OpenButton.Size = UDim2.new(0, 130, 0, 45)
 OpenButton.Position = UDim2.new(0, 20, 0.5, -22)
@@ -184,7 +182,7 @@ Instance.new("UICorner", MainFrame).CornerRadius = UDim.new(0, 25)
 local Title = Instance.new("TextLabel", MainFrame)
 Title.Size = UDim2.new(1, 0, 0, 35)
 Title.BackgroundColor3 = Color3.fromRGB(120, 0, 0)
-Title.Text = "Havens hub"
+Title.Text = "Havens hub | you vs homer ( beta )"
 Title.TextColor3 = Color3.new(1, 1, 1)
 Title.Font = Enum.Font.SourceSansBold
 Title.TextSize = 22
@@ -205,12 +203,12 @@ CloseButton.MouseButton1Click:Connect(function()
 	MainFrame.Visible = false
 end)
 
---== TABS ==--
+
 local TabsFrame = Instance.new("ScrollingFrame", MainFrame)
 TabsFrame.Size = UDim2.new(0, 130, 1, -35)
 TabsFrame.Position = UDim2.new(0, 0, 0, 35)
 TabsFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-TabsFrame.ScrollBarThickness = 4
+TabsFrame.ScrollBarThickness = 3
 Instance.new("UICorner", TabsFrame).CornerRadius = UDim.new(0, 10)
 
 local ContentFrame = Instance.new("Frame", MainFrame)
@@ -222,7 +220,7 @@ Instance.new("UICorner", ContentFrame).CornerRadius = UDim.new(0, 10)
 local TabList = Instance.new("UIListLayout", TabsFrame)
 TabList.Padding = UDim.new(0, 5)
 
---== SISTEMA DE TABS ==--
+
 local function createTab(name)
 	local TabButton = Instance.new("TextButton", TabsFrame)
 	TabButton.Size = UDim2.new(1, -10, 0, 30)
@@ -238,12 +236,12 @@ local function createTab(name)
 	TabContent.Size = UDim2.new(1, -10, 1, -10)
 	TabContent.Position = UDim2.new(0, 5, 0, 5)
 	TabContent.CanvasSize = UDim2.new(0, 0, 0, 0)
-	TabContent.ScrollBarThickness = 5
+	TabContent.ScrollBarThickness = 4
 	TabContent.Visible = false
 	TabContent.BackgroundTransparency = 1
 
 	local ListLayout = Instance.new("UIListLayout", TabContent)
-	ListLayout.Padding = UDim.new(0, 10)
+	ListLayout.Padding = UDim.new(0, 5)
 	ListLayout.FillDirection = Enum.FillDirection.Vertical
 	ListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 	ListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
@@ -259,10 +257,10 @@ local function createTab(name)
 		end
 		for _, v in pairs(TabsFrame:GetChildren()) do
 			if v:IsA("TextButton") then
-				TweenService:Create(v, TweenInfo.new(0.3), {BackgroundColor3 = Color3.fromRGB(50, 0, 0)}):Play()
+				TweenService:Create(v, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(50, 0, 0)}):Play()
 			end
 		end
-		TweenService:Create(TabButton, TweenInfo.new(0.3), {BackgroundColor3 = Color3.fromRGB(150, 0, 0)}):Play()
+		TweenService:Create(TabButton, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(150, 0, 0)}):Play()
 		TabContent.Visible = true
 	end)
 
@@ -274,7 +272,7 @@ local function createTab(name)
 		label.Text = title
 		label.TextColor3 = Color3.new(1, 1, 1)
 		label.Font = Enum.Font.SourceSansBold
-		label.TextSize = 18
+		label.TextSize = 15
 		label.TextXAlignment = Enum.TextXAlignment.Center
 		Instance.new("UICorner", label).CornerRadius = UDim.new(0, 10)
 		label.LayoutOrder = elementIndex
@@ -354,7 +352,7 @@ local function createTab(name)
 	}
 end
 
---== FUNÇÃO DE TROCAR TÍTULO ==--
+
 local function SetTitle(newTitle)
 	Title.Text = newTitle
 end
@@ -2300,3 +2298,59 @@ sugestaoTab.AddSection("as Admin or fly ")
 
 sugestaoTab.AddSection("new anti-cheat doesn't let ")
 
+local texts = {
+    "welcome",
+    "the streex He tried to raid my server. *he couldn't* LOLL",
+    "this its the best script!!",
+    "✌️ I really see the suggestions. ",
+    "DON'T TALK  * !loveyou *. you get an jumpscare",
+    "Havens Hub | you vs homer | ( beta )",
+    "O_o",
+    "[ :",
+    "] : <",
+    "Domer!!",
+    "Eat, my shorts",
+    "Havens Hub | you vs homer | ( beta )",
+    "meow",
+    "wowww",
+    "bobux",
+    "Blox cola",
+    "🤔 *seeing you* ",
+    "playing old music meme🎵",
+    "Never gonna give you up🎵🎵",
+    "Never gonna let you down🎵",
+    "Never gonna run around and desert you🎵🎵",
+    "Never gonna make you cry🎵",
+    "Never gonna say goodbye🎵",
+    "Never gonna tell a lie and hurt you🎵🎵🎵",
+    "Yipii",
+    "bro im want your like in my Script",
+    "GIVE ME AN HOT DOG",
+    "🫣 *your script its ia *",
+    "playing Night Mail -",
+     "This is the nightmail crossing the border",
+    "Bringing the cheque and the postal order",
+    "Letters for the rich, letters for the poor",
+    "The shop at the corner, the girl next door",
+    "End*"
+}
+
+local function WriteText(text)
+    SetTitle("")
+    for i = 1, #text do
+        local char = string.sub(text, i, i)
+        if i == 1 then
+            char = string.upper(char)
+        end
+        SetTitle(Title.Text .. char)
+        wait(0.1)
+    end
+end
+
+while true do
+    for _, t in ipairs(texts) do
+        WriteText(t)
+        wait(2) -- espera 1 segundo antes de ir para o próximo
+    end
+    SetTitle("") -- apaga antes de reiniciar o ciclo
+end
