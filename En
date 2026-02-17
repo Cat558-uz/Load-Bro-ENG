@@ -131,10 +131,11 @@ local function notify(title, text, duration)
 	end)
 end
 
+
+
 notify("warn", "script by kit_cynALT", 1)
 wait(1)
-notify("warn", "feliz dias dos namorados", 1)
-
+notify("warn", "Happy Valentine's Day!", 1)
 
 local TweenService = game:GetService("TweenService")
 local CoreGui = game:GetService("CoreGui")
@@ -379,8 +380,9 @@ OpenButton.MouseButton1Click:Connect(function()
 end)
 
 
+local ConfigTab = createTab("Config")
 
-local ConfigTab = createTab("Configs")
+
 
 ConfigTab.AddButton("get lora skin (free)", function()
 
@@ -403,13 +405,12 @@ end)
 
 ConfigTab.AddSection("configs")
 
-ConfigTab.AddButton("ver FPS", function()
+
+ConfigTab.AddButton("show FPS", function()
 local RunService = game:GetService("RunService")
 local fps = math.floor(1 / RunService.RenderStepped:Wait())
 notify("System", "FPS: " .. fps, 3)
 end)
-
-
 
 
 ConfigTab.AddToggle("Show FPS and MS", false, function(state)
@@ -517,7 +518,7 @@ end
 highlights = {}
 end
 
-ConfigTab.AddToggle("ver corpo Hitbox", false, function(state)
+ConfigTab.AddToggle("View Body hitbox", false, function(state)
 viewBodyActive = state
 if state then
 enableViewBody()
@@ -533,7 +534,7 @@ enableViewBody()
 end
 end)
 
-
+-- script create BY ghost
 
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
@@ -759,13 +760,15 @@ end
 end)
 
 
-ConfigTab.AddButton("destroy a interface", function() ScreenGui:Destroy() end)
+ConfigTab.AddButton("destroy GUI", function() ScreenGui:Destroy() end)
 
 
 
-ConfigTab.AddSection("server")
+ConfigTab.Content.Visible = true
 
-ConfigTab.AddButton("destruir Tabela de status", function()
+ConfigTab.AddSection("Server")
+
+ConfigTab.AddButton("Destroy stats", function()
 -- script create BY ghost
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
@@ -810,7 +813,7 @@ playerGui.ChildAdded:Connect(function(c)
 end)
 end)
 
-ConfigTab.AddButton("morrer", function()
+ConfigTab.AddButton("Reset", function()
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") then
@@ -818,7 +821,7 @@ LocalPlayer.Character.Humanoid.Health = 0
 end
 end)
 
-ConfigTab.AddButton("reentrar", function()
+ConfigTab.AddButton("Rejoin", function()
 local TeleportService = game:GetService("TeleportService")
 TeleportService:Teleport(game.PlaceId)
 end)
@@ -859,16 +862,10 @@ end)
 
 
 
-ConfigTab.Content.Visible = true
-
-
-
-
-
 local HomerTab = createTab("Homer")
 
-
 HomerTab.AddSection("config esp")
+
 
 --== VARIÁVEIS ==--
 local Players = game:GetService("Players")
@@ -1089,7 +1086,8 @@ Players.PlayerRemoving:Connect(removeESP)
 
 RunService.RenderStepped:Connect(updateESP)
 
-HomerTab.AddSection(" outros")
+HomerTab.AddSection(" others")
+
 
 --// VIEW HITBOX ALL PLAYERS (AUTO UPDATE)
 local Players = game:GetService("Players")
@@ -1140,7 +1138,7 @@ local function disableAllHighlights()
     highlights = {}
 end
 
-HomerTab.AddToggle("ver Hitbox dos jogadores", false, function(state)
+HomerTab.AddToggle("View Hitbox Players", false, function(state)
     viewBodyActive = state
     if state then
         enableLoop()
@@ -1148,7 +1146,6 @@ HomerTab.AddToggle("ver Hitbox dos jogadores", false, function(state)
         disableAllHighlights()
     end
 end)
-
 
 HomerTab.AddToggle("ver o  Homer [ 1 ]", false, function(state)
 	local Players = game:GetService("Players")
@@ -1197,7 +1194,6 @@ HomerTab.AddToggle("ver o  Homer [ 1 ]", false, function(state)
 		end
 	end
 end)
-
 
 --== AUTO KILL ==--
 local autoKill = false
@@ -1268,7 +1264,7 @@ table.insert(enemies, p)
 end
 end
 end
-if #enemies == 0 then notify("System","nenhum Bart Achado.") return end
+if #enemies == 0 then notify("System","No enemies found.") return end
 
 local target = enemies[math.random(1,#enemies)]
 local myChar = LocalPlayer.Character
@@ -1284,9 +1280,9 @@ end
 
 
 
-HomerTab.AddButton(" ritual falso (Usar o Homer)", function()
+HomerTab.AddButton("Fake Ritual  (Use the Homer)", function()
 
-notify("System", "preparando tudo!!", 1)
+notify("System", "wait!!", 1)
 
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
@@ -1341,10 +1337,7 @@ LocalPlayer.Character:BreakJoints()
 end)
 
 
-
--- script create BY ghost
-
-HomerTab.AddToggle("X Ray / visao Raio x", false, function(state)
+HomerTab.AddToggle("X Ray", false, function(state)
     task.spawn(function()
         local lpChar = game.Players.LocalPlayer.Character
         local parts = workspace:GetDescendants()
@@ -1367,7 +1360,7 @@ HomerTab.AddToggle("X Ray / visao Raio x", false, function(state)
     end)
 end)
 
-HomerTab.AddSection(" Ataque")
+HomerTab.AddSection("Attack ")
 
 
 
@@ -1493,7 +1486,7 @@ RunService.Heartbeat:Connect(function()
 end)
 
 -- Toggle do Hub
-HomerTab.AddToggle("auto achar barts (BETA)", false, function(v)
+HomerTab.AddToggle("Auto Found Barts (BETA)", false, function(v)
 	autoFollow = v
 	currentTarget = nil
 	currentPath = nil
@@ -1501,11 +1494,12 @@ HomerTab.AddToggle("auto achar barts (BETA)", false, function(v)
 end)
 
 
-HomerTab.AddButton("mata todos", killAll)
 
-HomerTab.AddButton("mata aleatorio", killRandom)
+HomerTab.AddButton("kill all ", killAll)
 
-HomerTab.AddToggle(" mata automatico", false, function(val)
+HomerTab.AddButton("kill Random ", killRandom)
+
+HomerTab.AddToggle("kill auto ", false, function(val)
 autoKill = val
 if val then autoKillLoop() end
 end)
@@ -1519,7 +1513,7 @@ local LocalPlayer = Players.LocalPlayer
 local alerting = false
 local lastAlert = 0
 
-BartTab.AddToggle("Homer alerta perto", false, function(state)
+BartTab.AddToggle("Homer alert nearby", false, function(state)
 	alerting = state
 
 	if alerting then
@@ -1535,7 +1529,7 @@ BartTab.AddToggle("Homer alerta perto", false, function(state)
 							if targetHRP then
 								local dist = (hrp.Position - targetHRP.Position).Magnitude
 								if dist <= 18 and (time() - lastAlert) >= 5 then
-									notify("warn", plr.Name .. " (Homer) tá perto CUIDADO!", 1)
+									notify("warn", plr.Name .. " (Homer) carefull", 1)
 									lastAlert = time()
 								end
 							end
@@ -1577,7 +1571,6 @@ BartTab.AddToggle("Bang", false, function(state)
 	end
 end)
 
-
 BartTab.AddToggle("Bang fast", false, function(state)
 	local Players = game:GetService("Players")
 	local speaker = Players.LocalPlayer
@@ -1604,7 +1597,6 @@ BartTab.AddToggle("Bang fast", false, function(state)
 		if bangAnim then bangAnim:Destroy() bangAnim = nil end
 	end
 end)
-
 
 
 BartTab.AddButton(" TP Tool", function()
@@ -1648,10 +1640,7 @@ if heart then
 	heart:Destroy()
 end
 
-
 end)
-
-
 
 local UserInputService = game:GetService("UserInputService")
 local Players = game:GetService("Players")
@@ -1659,7 +1648,7 @@ local LocalPlayer = Players.LocalPlayer
 
 local infinityJump = false
 
-BartTab.AddToggle("pulo infinito", false, function(val)
+BartTab.AddToggle("infinity jump", false, function(val)
 infinityJump = val
 end)
 
@@ -1683,7 +1672,7 @@ local Lighting = game:GetService("Lighting")
 local active = false
 local originalSettings = nil -- Variável para guardar o estado original do mapa
 
-BartTab.AddToggle("fullbright / brilho", false, function(state)
+BartTab.AddToggle("fullbright ", false, function(state)
     active = state
 
     if active then
@@ -1958,10 +1947,11 @@ end)
 
 end)
 
-
 BartTab.AddSection("Others")
 
-BartTab.AddToggle("flutuar", false, function(state)
+
+
+BartTab.AddToggle("float", false, function(state)
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local LocalPlayer = Players.LocalPlayer
@@ -2030,6 +2020,8 @@ end
 
 end)
 
+
+
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local spamming = false
@@ -2059,8 +2051,7 @@ BartTab.AddToggle("Spam Equip Flashlight", false, function(state)
 	end
 end)
 
-
-BartTab.AddButton("ativar máquina ( money )", function()
+BartTab.AddButton("active machine (money)", function()
 
     local Players = game:GetService("Players")
     local LocalPlayer = Players.LocalPlayer
@@ -2096,7 +2087,6 @@ BartTab.AddButton("ativar máquina ( money )", function()
     hrp.CFrame = originalCFrame
 
 end)
-
 
 BartTab.AddButton("Open All Doors Bart Spaceship", function()
     local Players = game:GetService("Players")
@@ -2280,14 +2270,14 @@ end
 function tpPosicaoSalva()
 	if savedPosition and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 		LocalPlayer.Character:MoveTo(savedPosition)
-		notify("System", "teleportado", 1)
+		notify("System", "teleported", 1)
 	else
 		print("Nenhuma posição salva ou personagem inválido.")
 	end
 end
 
-TpTab.AddButton("Salvar posição", salvarPosicao)
-TpTab.AddButton("Teleportar para posição salva", tpPosicaoSalva)
+TpTab.AddButton("save position", salvarPosicao)
+TpTab.AddButton("tp to position saved", tpPosicaoSalva)
 
 TpTab.AddSection("more Tp")
 
@@ -2342,14 +2332,13 @@ end
     
 end)
 
-
 local CTab = createTab("Customize")
 
-CTab.AddSection("coloque seu id para funcionar")
+CTab.AddSection("input your id for works")
 
-CTab.AddSection("ele já e salvo só dar enter ou < no celular/Pc ")
+CTab.AddSection("It's already saved, just press enter or < on your phone/PC ")
 
-CTab.AddSection("após reexecutar só apertar para ativar ")
+CTab.AddSection("After re-executing, just activate (saved).")
 
 
 local Players = game:GetService("Players")
@@ -2446,35 +2435,35 @@ CTab.AddToggle("active skin customized", false, function(state)
 			isEnabled = true
 			setCharacterVisible(false)
 			createBillboard()
-			notify("System", "Imagem adicionada (ID: " .. currentId .. ")", 1)
+			notify("System", "image  (ID: " .. currentId .. ")", 1)
 		else
-			notify("System", "Você precisa estar no time Bart ou Barts", 5)
+			notify("System", "I hope you're on Team Bart", 5)
 		end
 	else
 		isEnabled = false
 		removeBillboard()
 		setCharacterVisible(true)
-		notify("System", "ativado", 1)
+		notify("System", "atived", 1)
 	end
 end)
 
-CTab.AddTextBox("Coloque o ID da imagem", function(value)
+CTab.AddTextBox("Enter your image ID.", function(value)
 	if value and value ~= "" then
 		currentId = tostring(value)
 		saveImageId(currentId)
-		notify("System", "ID salvo: " .. currentId, 1)
+		notify("System", "ID salved: " .. currentId, 3)
 	else
 		currentId = defaultId
 		saveImageId(currentId)
-		notify("System", "Usando ID padrao ", 1)
+		notify("System", "Using Id From script", 3)
 	end
 end)
 
 CTab.AddSection("Walk animation")
 
-CTab.AddSection("ative na partida")
+CTab.AddSection("activate in the round")
 
-CTab.AddSection("o primeiro a animacao parada")
+CTab.AddSection("the first one and the still animation ")
 
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
@@ -2584,15 +2573,15 @@ CTab.AddToggle("Active Animation Walk", false, function(state)
 			currentIndex = 1
 			createBillboard(imageIDs[currentIndex])
 			task.spawn(animateImages)
-			notify("System", "Animação de imagens ativada", 1)
+			notify("System", "actived", 1)
 		else
-			notify("System", "Você precisa estar no time Bart ou Barts", 2)
+			notify("System", "Wait for Team bart", 2)
 		end
 	else
 		isActive = false
 		if renderConn then renderConn:Disconnect() end
 		if imgGui then imgGui:Destroy() end
-		notify("System", "Animação desativada", 1)
+		notify("System", "off", 1)
 	end
 end)
 
@@ -2601,16 +2590,14 @@ for i = 1, 5 do
 		if value and value ~= "" then
 			imageIDs[i] = tostring(value)
 			saveIDs(imageIDs)
-			notify("System", "ID " .. i .. " salvo: " .. value, 1)
+			notify("System", "ID " .. i .. " saved: " .. value, 1)
 		end
 	end)
 end
 
 local ScriptTab = createTab("Script")
- 
-ScriptTab.AddSection("Alguns dos Scripts n pod funcionar ")
 
-
+ScriptTab.AddSection("Some of the scripts may not work. ")
 
 ScriptTab.AddButton("wall Hop Hub ", function()
 
@@ -2620,6 +2607,13 @@ loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Wallhop-Hub
 
 end)
 
+ScriptTab.AddButton("fly script", function()
+
+
+wait(0.1)
+loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-FLY-V9-BY-KIRO-In-black-and-white-59302"))()
+
+end)
 
 ScriptTab.AddButton("Hub onionware (Skins can ban)", function()
 
@@ -2627,7 +2621,7 @@ loadstring(game:HttpGet("https://rawscripts.net/raw/UPD-You-VS-Homer-Onionware-8
 
 end)
 
-ScriptTab.AddButton("bartender bom script", function()
+ScriptTab.AddButton("bartender good", function()
 
 loadstring(game:HttpGet("https://rawscripts.net/raw/You-VS-Homer-Bartender-78034"))()
 
@@ -2639,23 +2633,24 @@ loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Super-ring-
 
 end)
 
+
 local sugestaoTab = createTab("sugestions")
 
 
 
-sugestaoTab.AddButton("carregar sugestões ", function()
+sugestaoTab.AddButton("load sugestion ", function()
 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Cat558-uz/Ed-Sugestion/refs/heads/main/sugestao.lua.obfuscated.lua.txt"))()
 
 end)
 
-sugestaoTab.AddSection("aviso ")
+sugestaoTab.AddSection("Warn ")
 
-sugestaoTab.AddSection("n coloco ideias que n der ")
+sugestaoTab.AddSection("I don't put forward ideas that don't work. ")
 
-sugestaoTab.AddSection("como Admin ou fly  ")
+sugestaoTab.AddSection("as Admin or fly ")
 
-sugestaoTab.AddSection("novo ant cheat n deixa ")
+sugestaoTab.AddSection("new anti-cheat doesn't let ")
 
 local texts = {
     "welcome",
